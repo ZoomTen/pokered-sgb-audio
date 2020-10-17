@@ -177,6 +177,7 @@ ROMX $2B
 	"Pokédex Text"
 ROMX $2C
 	"Move Names"
+	"SGB Music"
 WRAM0
 	"WRAM"
 	org $c100
@@ -194,6 +195,8 @@ SRAM $2
 	"Saved Boxes 1"
 SRAM $3
 	"Saved Boxes 2"
+SRAM $4
+	"Tileset Saves"
 HRAM
 	"OAM DMA"
 	"HRAM"

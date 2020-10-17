@@ -44,11 +44,25 @@ MASK_EN: MACRO
 	ds 14, 0
 ENDM
 
+SOU_TRN: MACRO
+	db ($9 << 3) + 1
+	ds 15, 0
+ENDM
+
 DATA_SND: MACRO
 	db ($f << 3) + 1
 	dw \1 ; address
 	db \2 ; bank
 	db \3 ; length (1-11)
+ENDM
+
+SOUND: MACRO
+	db ($8 << 3) + 1
+	db \1 ; Sound Effect A (Port 1) Decrescendo 8bit Sound Code
+	db \2 ; Sound Effect B (Port 2) Sustain     8bit Sound Code
+	db \3 ; Sound Effect Attributes
+	db \4 ; Music Score Code
+	ds 11, 0
 ENDM
 
 BlkPacket_WholeScreen:
@@ -234,6 +248,8 @@ PctTrnPacket:  PCT_TRN
 MaskEnFreezePacket: MASK_EN 1
 MaskEnCancelPacket: MASK_EN 0
 
+SoundTransferPacket: SOU_TRN
+SoundEnablePacket: SOUND 0, 0, 0, 1
 
 ; These are DATA_SND packets containing SNES code.
 ; This set of packets is found in several Japanese SGB-compatible titles.

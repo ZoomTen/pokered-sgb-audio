@@ -452,6 +452,26 @@ PrepareSuperNintendoVRAMTransfer:
 	dw DataSnd_725a8
 	dw DataSnd_725b8
 
+Trn_FreezeSGBScreen:
+	di
+	ld hl, MaskEnFreezePacket
+	call SendSGBPacket
+	reti
+
+Trn_UnfreezeSGBScreen:
+	di
+	ld hl, MaskEnCancelPacket
+	call SendSGBPacket
+	reti
+
+Trn_PlaySGBMusic:
+	di
+	ld hl, SoundTransferPacket
+	call SendSGBPacket
+	ld hl, SoundEnablePacket
+	call SendSGBPacket
+	reti
+
 CheckSGB:
 ; Returns whether the game is running on an SGB in carry.
 	ld hl, MltReq2Packet

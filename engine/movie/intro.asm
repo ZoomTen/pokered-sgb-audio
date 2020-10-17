@@ -11,6 +11,83 @@ PlayIntro:
 	inc a
 	ldh [hAutoBGTransferEnabled], a
 	call PlayShootingStar
+;;;;;;;;;;;;;;;;;;;;
+; freeze the screen
+	ld b, BANK(Trn_FreezeSGBScreen)
+	ld hl,Trn_FreezeSGBScreen
+	call Bankswitch
+
+	call SaveScreenTilesToBuffer1
+	call DisableLCD
+
+; save tileset
+	ld a, SRAM_ENABLE
+	ld [MBC1SRamEnable], a
+	ld a, 4
+	ld [MBC1SRamBank], a
+	ld bc, $1000
+	ld hl, $8800
+	ld de, sTilesetBackup
+	call CopyData
+
+	ld bc, $800
+	ld a, BANK(SGB_IntroMusic)
+	ld hl, SGB_IntroMusic
+	ld de, $9000
+	call FarCopyData
+	ld bc, $800
+	ld a, BANK(SGB_IntroMusic)
+	ld hl, SGB_IntroMusic+$800
+	ld de, $8800
+	call FarCopyData
+
+	xor a
+	ld hl, $C3a0
+	ld b, $d
+.outer
+	ld c, $14
+.inner
+	ld [hli], a
+	inc a
+	dec c
+	jr nz, .inner
+	push af
+	ld a, b
+	or c
+	jr z, .out
+	dec b
+	pop af
+	jr .outer
+.out
+	pop af
+	call EnableLCD
+
+	call Delay3
+	call DelayFrame
+	ld b, BANK(Trn_PlaySGBMusic)
+	ld hl,Trn_PlaySGBMusic
+	call Bankswitch
+
+	call Delay3
+	call DisableLCD
+; reload tileset
+	ld bc, $1000
+	ld hl, sTilesetBackup
+	ld de, $8800
+	call CopyData
+
+	xor a
+	ld [MBC1SRamEnable], a
+
+	call LoadScreenTilesFromBuffer1
+	call EnableLCD
+
+; unfreeze the screen
+	call Delay3
+	ld b, BANK(Trn_UnfreezeSGBScreen)
+	ld hl,Trn_UnfreezeSGBScreen
+	call Bankswitch
+;;;;;;;;;;;;;;;
 	call PlayIntroScene
 	call GBFadeOutToWhite
 	xor a
@@ -333,9 +410,9 @@ PlayShootingStar:
 	ld a, BANK(Music_IntroBattle)
 	ld [wAudioROMBank], a
 	ld [wAudioSavedROMBank], a
-	ld a, MUSIC_INTRO_BATTLE
-	ld [wNewSoundID], a
-	call PlaySound
+	;ld a, MUSIC_INTRO_BATTLE
+	;ld [wNewSoundID], a
+	;call PlaySound
 	call IntroClearMiddleOfScreen
 	call ClearSprites
 	jp Delay3
