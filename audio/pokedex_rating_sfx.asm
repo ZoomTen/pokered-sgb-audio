@@ -9,6 +9,7 @@ PlayPokedexRatingSfx::
 	inc hl
 	jr .getSfxPointer
 .gotSfxPointer
+; Pokedex sounds are gameboy
 	push bc
 	ld a, SFX_STOP_ALL_MUSIC
 	ld [wNewSoundID], a

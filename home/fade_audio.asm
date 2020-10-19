@@ -9,6 +9,7 @@ FadeOutAudio::
 	ldh [rNR50], a
 	ret
 .fadingOut
+; TODO: SGB fadeout control
 	ld a, [wAudioFadeOutCounter]
 	and a
 	jr z, .counterReachedZero

@@ -72,9 +72,8 @@ ENDC
 	ld [wNewSoundID], a
 	call PlaySound
 .asm_19512
-	ld c, BANK(Music_MeetRival)
-	ld a, MUSIC_MEET_RIVAL
-	call PlayMusic
+	ld a, Mus_MeetRival
+	call PlayMusicID
 	xor a
 	ldh [hJoyHeld], a
 	ld a, $f0

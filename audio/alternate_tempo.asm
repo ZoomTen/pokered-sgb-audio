@@ -1,5 +1,6 @@
 ; an alternate start for MeetRival which has a different first measure
 Music_RivalAlternateStart::
+	; XXX: TODO
 	ld c, BANK(Music_MeetRival)
 	ld a, MUSIC_MEET_RIVAL
 	call PlayMusic
@@ -19,6 +20,7 @@ Audio1_OverwriteChannelPointer:
 
 ; an alternate tempo for MeetRival which is slightly slower
 Music_RivalAlternateTempo::
+	; XXX: TODO
 	ld c, BANK(Music_MeetRival)
 	ld a, MUSIC_MEET_RIVAL
 	call PlayMusic
@@ -28,6 +30,7 @@ Music_RivalAlternateTempo::
 
 ; applies both the alternate start and alternate tempo
 Music_RivalAlternateStartAndTempo::
+	; XXX: TODO
 	call Music_RivalAlternateStart
 	ld hl, wChannelCommandPointers
 	ld de, Music_MeetRival_branch_b19b
@@ -35,6 +38,7 @@ Music_RivalAlternateStartAndTempo::
 
 ; an alternate tempo for Cities1 which is used for the Hall of Fame room
 Music_Cities1AlternateTempo::
+	; XXX: TODO
 	ld a, 10
 	ld [wAudioFadeOutCounterReloadValue], a
 	ld [wAudioFadeOutCounter], a

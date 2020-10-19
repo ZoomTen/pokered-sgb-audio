@@ -8,6 +8,7 @@ PlayDefaultMusic::
 
 PlayDefaultMusicFadeOutCurrent::
 ; Fade out the current music and then play the default music.
+	jr PlayDefaultMusicCommon
 	ld c, 10
 	ld d, 0
 	ld a, [wd72e]
@@ -24,11 +25,11 @@ PlayDefaultMusicCommon::
 	jr z, .walking
 	cp $2
 	jr z, .surfing
-	ld a, MUSIC_BIKE_RIDING
+	ld a, Mus_BikeRiding
 	jr .next
 
 .surfing
-	ld a, MUSIC_SURFING
+	ld a, Mus_Surfing
 
 .next
 	ld b, a
@@ -63,8 +64,7 @@ PlayDefaultMusicCommon::
 	ld [wAudioFadeOutControl], a
 	ld a, b
 	ld [wLastMusicSoundID], a
-	ld [wNewSoundID], a
-	jp PlaySound
+	jp PlayMusicID
 
 UpdateMusic6Times::
 ; This is called when entering a map, before fading out the current music and
@@ -215,4 +215,12 @@ PlaySound::
 	pop bc
 	pop de
 	pop hl
+	ret
+
+PlayMusicID::
+	; a = Music to play
+	push de
+	ld d, a
+	homecall _PlayMusicID
+	pop de
 	ret

@@ -284,9 +284,8 @@ CableClub_DoBattleOrTradeAgain:
 	predef HealParty
 	jp ReturnToCableClubRoom
 .trading
-	ld c, BANK(Music_GameCorner)
-	ld a, MUSIC_GAME_CORNER
-	call PlayMusic
+	ld a, Mus_GameCorner
+	call PlayMusicID
 	jr CallCurrentTradeCenterFunction
 
 PleaseWaitString:

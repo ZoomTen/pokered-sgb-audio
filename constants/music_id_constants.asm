@@ -1,0 +1,55 @@
+; Music ID definitions
+	const_def
+; beginning screens
+	const Mus_Intro
+	const Mus_TitleScreen
+; towns and cities
+	const Mus_Pallet
+	const Mus_Cities1
+	const Mus_Cities2
+	const Mus_Celadon
+	const Mus_Cinnabar
+	const Mus_Vermilion
+	const Mus_Lavender
+	const Mus_SSAnne
+; routes
+	const Mus_Routes1
+	const Mus_Routes2
+	const Mus_Routes3
+	const Mus_Routes4
+	const Mus_IndigoPlateau
+; places
+	const Mus_Pokecenter
+	const Mus_Gym
+	const Mus_OaksLab
+	const Mus_GameCorner
+	const Mus_Dungeon1
+	const Mus_Dungeon2
+	const Mus_Dungeon3
+	const Mus_CinnabarMansion
+	const Mus_PokemonTower
+	const Mus_SilphCo
+; encounters
+	const Mus_MeetProfOak
+	const Mus_MeetRival
+	const Mus_MeetEvilTrainer
+	const Mus_MeetFemaleTrainer
+	const Mus_MeetMaleTrainer
+; events
+	const Mus_FollowMe
+	const Mus_Evolution
+	const Mus_BikeRiding
+	const Mus_Surfing
+	const Mus_Jigglypuff
+; battles
+	const Mus_WildBattle
+	const Mus_TrainerBattle
+	const Mus_GymLeaderBattle
+	const Mus_ChampionBattle
+; victories
+	const Mus_DefeatedWildMon
+	const Mus_DefeatedTrainer
+	const Mus_DefeatedGymLeader
+; end
+	const Mus_HallOfFame
+	const Mus_Credits

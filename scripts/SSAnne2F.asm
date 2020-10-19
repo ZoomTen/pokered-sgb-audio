@@ -27,9 +27,8 @@ SSAnne2Script0:
 	ld a, SFX_STOP_ALL_MUSIC
 	ld [wNewSoundID], a
 	call PlaySound
-	ld c, BANK(Music_MeetRival)
-	ld a, MUSIC_MEET_RIVAL
-	call PlayMusic
+	ld a, Mus_MeetRival
+	call PlayMusicID
 	ld a, [wCoordIndex]
 	ldh [hSavedCoordIndex], a
 	ld a, HS_SS_ANNE_2F_RIVAL

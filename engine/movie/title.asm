@@ -212,9 +212,8 @@ ENDC
 	call PrintGameVersionOnTitleScreen
 	call Delay3
 	call WaitForSoundToFinish
-	ld a, MUSIC_TITLE_SCREEN
-	ld [wNewSoundID], a
-	call PlaySound
+	ld a, Mus_TitleScreen
+	call PlayMusicID
 	xor a
 	ld [wUnusedCC5B], a
 

@@ -791,7 +791,7 @@ FaintEnemyPokemon:
 	jr .sfxplayed
 .wild_win
 	call EndLowHealthAlarm
-	ld a, MUSIC_DEFEATED_WILD_MON
+	ld a, Mus_DefeatedWildMon
 	call PlayBattleVictoryMusic
 .sfxplayed
 ; bug: win sfx is played for wild battles before checking for player mon HP
@@ -914,16 +914,16 @@ ReplaceFaintedEnemyMon:
 
 TrainerBattleVictory:
 	call EndLowHealthAlarm
-	ld b, MUSIC_DEFEATED_GYM_LEADER
+	ld b, Mus_DefeatedGymLeader
 	ld a, [wGymLeaderNo]
 	and a
 	jr nz, .gymleader
-	ld b, MUSIC_DEFEATED_TRAINER
+	ld b, Mus_DefeatedTrainer
 .gymleader
 	ld a, [wTrainerClass]
 	cp RIVAL3 ; final battle against rival
 	jr nz, .notrival
-	ld b, MUSIC_DEFEATED_GYM_LEADER
+	ld b, Mus_DefeatedGymLeader
 	ld hl, wFlags_D733
 	set 1, [hl]
 .notrival
@@ -961,9 +961,8 @@ PlayBattleVictoryMusic:
 	ld a, SFX_STOP_ALL_MUSIC
 	ld [wNewSoundID], a
 	call PlaySoundWaitForCurrent
-	ld c, BANK(Music_DefeatedTrainer)
 	pop af
-	call PlayMusic
+	call PlayMusicID
 	jp Delay3
 
 HandlePlayerMonFainted:

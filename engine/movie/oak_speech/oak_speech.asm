@@ -34,10 +34,8 @@ SetDefaultNames:
 OakSpeech:
 	ld a, SFX_STOP_ALL_MUSIC
 	call PlaySound
-	ld a, BANK(Music_Routes2)
-	ld c, a
-	ld a, MUSIC_ROUTES2
-	call PlayMusic
+	ld a, Mus_Routes2
+	call PlayMusicID
 	call ClearScreen
 	call LoadTextBoxTilePatterns
 	call SetDefaultNames

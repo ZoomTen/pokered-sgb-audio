@@ -17,6 +17,7 @@ ShakeElevator::
 	add d
 	ldh [hSCY], a
 	push bc
+; Collision is gameboy SFX
 	ld c, BANK(SFX_Collision_1)
 	ld a, SFX_COLLISION
 	call PlayMusic
@@ -29,6 +30,7 @@ ShakeElevator::
 	ldh [hSCY], a
 	ld a, SFX_STOP_ALL_MUSIC
 	call PlaySound
+; Safari Zone PA is gameboy SFX
 	ld c, BANK(SFX_Safari_Zone_PA)
 	ld a, SFX_SAFARI_ZONE_PA
 	call PlayMusic

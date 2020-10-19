@@ -1798,6 +1798,7 @@ PlayedFluteHadEffectText:
 	and a
 	jr nz, .done
 ; play out-of-battle pokeflute music
+; Pokeflute is also gameboy for now
 	ld a, SFX_STOP_ALL_MUSIC
 	call PlaySound
 	ld a, SFX_POKEFLUTE

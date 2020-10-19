@@ -41,9 +41,8 @@ PewterJigglypuffText:
 	dec hl
 
 	push hl
-	ld c, BANK(Music_JigglypuffSong)
-	ld a, MUSIC_JIGGLYPUFF_SONG
-	call PlayMusic
+	ld a, Mus_Jigglypuff
+	call PlayMusicID
 	pop hl
 
 .spinMovementLoop

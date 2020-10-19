@@ -773,7 +773,7 @@ HandleBlackOut::
 StopMusic::
 	ld [wAudioFadeOutControl], a
 	ld a, SFX_STOP_ALL_MUSIC
-	ld [wNewSoundID], a
+	ld [wNewSoundID], a	; XXX: Map load sound
 	call PlaySound
 .wait
 	ld a, [wAudioFadeOutControl]
@@ -2270,16 +2270,15 @@ LoadMapHeader::
 	ld b, $00
 	ldh a, [hLoadedROMBank]
 	push af
-	ld a, BANK(MapSongBanks)
+	ld a, BANK(MapSongIDs)
 	ldh [hLoadedROMBank], a
 	ld [MBC1RomBank], a
-	ld hl, MapSongBanks
+	ld hl, MapSongIDs
 	add hl, bc
-	add hl, bc
-	ld a, [hli]
-	ld [wMapMusicSoundID], a ; music 1
 	ld a, [hl]
-	ld [wMapMusicROMBank], a ; music 2
+	ld [wMapMusicSoundID], a ; music 1
+	;ld a, [hl]
+	;ld [wMapMusicROMBank], a ; music 2
 	pop af
 	ldh [hLoadedROMBank], a
 	ld [MBC1RomBank], a

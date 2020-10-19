@@ -92,9 +92,8 @@ Route22Script0:
 	ld [wNewSoundID], a
 	call PlaySound
 .asm_50f4e
-	ld c, BANK(Music_MeetRival)
-	ld a, MUSIC_MEET_RIVAL
-	call PlayMusic
+	ld a, Mus_MeetRival
+	call PlayMusicID
 	ld a, $1
 	ldh [hSpriteIndex], a
 	call Route22MoveRivalSprite
