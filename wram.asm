@@ -3117,6 +3117,8 @@ wBoxMonNicksEnd::
 
 wBoxDataEnd::
 
+wCurrentMusicID:: db
+
 
 SECTION "Stack", WRAM0
 wStack::

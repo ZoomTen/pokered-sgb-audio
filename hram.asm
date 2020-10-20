@@ -399,4 +399,8 @@ hJoyInput:: db
 
 hDisableJoypadPolling:: db
 
-	ds 5
+hLastLCDState:: db
+hLastSCX:: db
+hLastSCY:: db
+hLastBGP:: db
+hLastWY:: db

@@ -10,3 +10,5 @@ INCLUDE "macros/scripts/audio.asm"
 INCLUDE "macros/scripts/maps.asm"
 INCLUDE "macros/scripts/events.asm"
 INCLUDE "macros/scripts/text.asm"
+
+INCLUDE "macros/audio/sbn.asm"

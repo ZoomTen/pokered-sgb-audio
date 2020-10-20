@@ -224,3 +224,67 @@ PlayMusicID::
 	homecall _PlayMusicID
 	pop de
 	ret
+
+LoadSGBTrack::
+; Used in _PlayMusicID. Manipulates VRAM, so it is not standalone
+	; a = Bank of music header
+	; hl = Pointer of music header
+; Returns:
+	; Copy bc bytes from hl to de.
+	ld c, a
+	ld a, [hLoadedROMBank]
+	push af
+	ld a, c
+	ld [hLoadedROMBank], a
+	ld [MBC1RomBank], a
+; load data length
+	ld c, [hl]
+	inc hl
+	ld b, [hl]
+	inc hl
+; load data -> de
+	ld e, [hl]
+	inc hl
+	ld d, [hl]
+	ld h, d
+	ld l, e
+; bootstrap data
+	ld hl, vChars0	; beginning of data
+; Begin SBN block
+; size 0xFF8
+	ld a, $F8
+	ld [hl+], a
+	ld a, $0F
+	ld [hl+], a
+; destination 0x2B00
+	ld a, $00
+	ld [hl+], a
+	ld a, $2B
+	ld [hl+], a
+; only song definition: 0x2B02
+	ld a, $02
+	ld [hl+], a
+	ld a, $2B
+	ld [hl+], a
+; copy the actual data
+	; de = data pointer
+	; hl = VRAM pointer
+; swap(de, hl) - i feel dirty
+	push de
+	push hl
+	pop de
+	pop hl
+	call CopyData
+; make tail
+	ld hl, vChars0 + $1000 - 4
+	xor a
+	ld [hl+], a
+	ld [hl+], a	; 00 00 signifies end of block processing
+	ld [hl+], a
+	ld a, 4
+	ld [hl], a	; 00 04 = SPC engine jump to 0x400
+; end
+	pop af
+	ld [hLoadedROMBank], a
+	ld [MBC1RomBank], a
+	ret
