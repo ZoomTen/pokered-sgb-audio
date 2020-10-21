@@ -65,6 +65,15 @@ SOUND: MACRO
 	ds 11, 0
 ENDM
 
+JUMP: MACRO
+	db ($12 << 3) + 1
+	dw \1 ; set program counter
+	db \2 ; bank
+	dw \3 ; set interrupt handler
+	db \4 ; bank
+	ds 9, 0
+ENDM
+
 BlkPacket_WholeScreen:
 	ATTR_BLK 1
 	ATTR_BLK_DATA %011, 0,0,0, 00,00, 19,17
@@ -326,3 +335,11 @@ DataSnd_725b8: DATA_SND $810, $0, 11
 	db  $60                 ; rts
 	db  $EA                 ; nop
 	db  $EA                 ; nop
+
+;  SNES code
+
+JumpToMSU1EntryPoint: JUMP $1810, 0, 0, 0
+MSU1SoundTemplate: DATA_SND $1800, $0, 2
+	db  $01, $FF
+	ds 9, 0
+INCLUDE "audio/msu1/_bootstrap.asm"

@@ -37,7 +37,7 @@ RGBLINK ?= $(RGBDS)rgblink
 .SECONDEXPANSION:
 .PRECIOUS:
 .SECONDARY:
-.PHONY: all red blue blue_debug clean tidy compare tools
+.PHONY: all red blue blue_debug clean tidy compare tools snes_code
 
 all: $(roms)
 red:        pokered.gbc
@@ -50,12 +50,16 @@ clean: tidy
 tidy:
 	rm -f $(roms) $(pokered_obj) $(pokeblue_obj) $(pokeblue_debug_obj) $(roms:.gbc=.map) $(roms:.gbc=.sym) rgbdscheck.o
 	$(MAKE) clean -C tools/
+	$(MAKE) clean -C audio/msu1/
 
 compare: $(roms)
 	@$(SHA1) -c roms.sha1
 
 tools:
 	$(MAKE) -C tools/
+
+snes_code:
+	$(MAKE) -C audio/msu1/
 
 
 RGBASMFLAGS = -h -L -Weverything
@@ -81,9 +85,10 @@ endef
 
 # Build tools when building the rom.
 # This has to happen before the rules are processed, since that's when scan_includes is run.
-ifeq (,$(filter clean tidy tools,$(MAKECMDGOALS)))
+ifeq (,$(filter clean tidy tools snes_code,$(MAKECMDGOALS)))
 
 $(info $(shell $(MAKE) -C tools))
+$(info $(shell $(MAKE) -C audio/msu1))
 
 # Dependencies for objects (drop _red and _blue from asm file basenames)
 $(foreach obj, $(pokered_obj), $(eval $(call DEP,$(obj),$(obj:_red.o=.asm))))

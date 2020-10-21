@@ -3118,6 +3118,7 @@ wBoxMonNicksEnd::
 wBoxDataEnd::
 
 wCurrentMusicID:: db
+wMSU1PacketSend:: ds 16
 
 
 SECTION "Stack", WRAM0

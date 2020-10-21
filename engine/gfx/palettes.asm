@@ -420,6 +420,10 @@ LoadSGB:
 	ld hl, SuperPalettes
 	call CopyGfxToSuperNintendoVRAM
 	call ClearVram
+	ld de, Packets_bootstrap
+	call TransferMultiplePackets
+	ld hl, JumpToMSU1EntryPoint
+	call SendSGBPacket
 	ld hl, MaskEnCancelPacket
 	jp SendSGBPacket
 
@@ -473,6 +477,7 @@ TransferPacket:
 	ld l, e		; hl -> de
 	call SendSGBPacket
 	reti
+
 TransferMultiplePackets:
 	; de = pointer to the transfer data
 	;      this has to be one in the same bank
@@ -671,9 +676,6 @@ CopySGBBorderTiles:
 	ret
 
 INCLUDE "data/sgb/sgb_packets.asm"
-
 INCLUDE "data/pokemon/palettes.asm"
-
 INCLUDE "data/sgb/sgb_palettes.asm"
-
 INCLUDE "data/sgb/sgb_border.asm"
