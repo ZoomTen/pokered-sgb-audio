@@ -464,11 +464,15 @@ Trn_UnfreezeSGBScreen:
 	call SendSGBPacket
 	reti
 
-Trn_PlaySGBMusic:
+TransferPacket:
+	; de = pointer to the transfer data
+	;      this has to be one in the same bank
+	;      this function is located in or WRAM :upside_down:
 	di
-	ld hl, SoundTransferPacket
+	ld h, d
+	ld l, e		; hl -> de
 	call SendSGBPacket
-	ld hl, SoundEnablePacket
+	reti
 TransferMultiplePackets:
 	; de = pointer to the transfer data
 	;      this has to be one in the same bank
