@@ -469,7 +469,20 @@ Trn_PlaySGBMusic:
 	ld hl, SoundTransferPacket
 	call SendSGBPacket
 	ld hl, SoundEnablePacket
+TransferMultiplePackets:
+	; de = pointer to the transfer data
+	;      this has to be one in the same bank
+	;      this function is located in or WRAM :upside_down:
+	di
+	ld a, [de]	; number of packets to transfer
+	inc de
+	ld h, d
+	ld l, e		; hl -> de
+	ld c, a		; hopefully this is free
+.transfer
 	call SendSGBPacket
+	dec c
+	jr nz, .transfer
 	reti
 
 CheckSGB:
