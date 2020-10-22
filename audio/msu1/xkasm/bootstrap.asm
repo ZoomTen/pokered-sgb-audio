@@ -21,7 +21,7 @@ v_ask_restart:
 v_track_number:
 	dw 0
 v_volume:
-	db $48
+	db $FF
 v_play_mode:
 	db 0
 // other variables
