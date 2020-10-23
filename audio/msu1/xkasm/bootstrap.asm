@@ -11,6 +11,7 @@ define MSU_TRACK   $2004
 define MSU_VOLUME  $2006
 define MSU_CONTROL $2007
 
+define FADING_SPEED 4
 define SGB_INT     $BB
 
 base {BASE_ADDR}
@@ -29,9 +30,11 @@ i_volume:	// the initial volume
 i_play_mode:	// the play mode of the new track
 	db 0
 
+f_fading:	// fading out flag
+	db 0
+v_fade_volume:	// volume of fading
+	db 0
 
-	db 0
-	db 0
 	db 0
 	db 0
 	db 0
@@ -68,6 +71,7 @@ check_msu1:
 // set SGB interrupt vector
 	ldx.w #interrupt_msu1
 	stx   {SGB_INT}
+
 // enable interrupts:
 //              NMI for the SNES
 //              H/V for the GameBoy
@@ -91,9 +95,23 @@ interrupt_msu1:
 	bne   .skip		// skip processing if audio is busy at the moment
 				// we can do it next interrupt
 
+	lda   f_fading
+	bit.b #%00000010
+	bne   .do_fade          // if we are fading out, jump to fade routine
+
 	lda   i_ask_restart
-	cmp.b #1
-	bne   .skip
+	bit.b #%00000011
+	beq   .skip		// if we're not asking for a restart or fade, skip
+
+	bit.b #%00000010
+	beq   .restart_song	// if we're not fading out, restart the song right away
+
+// otherwise, set fading flags
+	sta   f_fading		// fading flag
+	lda   i_volume
+	sta   v_fade_volume
+	sta   {MSU_VOLUME}	// initial volume
+	bra .skip
 
 .restart_song:
 // play a song
@@ -103,11 +121,25 @@ interrupt_msu1:
 	stx   {MSU_TRACK}
 	lda   i_play_mode
 	sta   {MSU_CONTROL}
+	bra   .reset_flags
 
-// reset restart flag
+.do_fade:
+	lda   v_fade_volume
+	sbc.b #{FADING_SPEED}
+	bcc   .after_fade	// if done, load the next song immediately
+	sta   v_fade_volume
+	sta   {MSU_VOLUME}
+	bra   .skip
+.after_fade:
+	lda   f_fading
+	bit.b #%00000001
+	bne   .restart_song	// if we also asked for a restart, do that
+// otherwise, clear flags and fall through
+
+.reset_flags:
 	lda.b #0
 	sta   i_ask_restart
-
+	sta   f_fading
 .skip:
 	plp
 	rti	// this is an interrupt routine, so we use this
