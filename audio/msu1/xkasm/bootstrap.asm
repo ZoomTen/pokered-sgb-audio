@@ -15,16 +15,21 @@ define SGB_INT     $BB
 
 base {BASE_ADDR}
 
+// i_ = GB -> SNES interfaces
+// f_ = MSU1 controller flags
+// v_ = MSU1 controller variables
+
 // 16 bytes of RAM to be used for the interrupt
-v_ask_restart:
+i_ask_restart:	// ask to reset the MSU1 registers with parameters on packet send
 	db 0
-v_track_number:
+i_track_number:	// the new track number
 	dw 0
-v_volume:
+i_volume:	// the initial volume
 	db $FF
-v_play_mode:
+i_play_mode:	// the play mode of the new track
 	db 0
-// other variables
+
+
 	db 0
 	db 0
 	db 0
@@ -79,29 +84,31 @@ interrupt_msu1:
 	php
 	rep #$10	// 16 bit xy
 	sep #$20	//  8 bit a
-	
 	lda $4210	// acknowledge interrupt
 	
-	lda   v_ask_restart
+	lda   {MSU_STATUS}
+	bit.b #%10000000
+	bne   .skip		// skip processing if audio is busy at the moment
+				// we can do it next interrupt
+
+	lda   i_ask_restart
 	cmp.b #1
-	bne   .no_restart
+	bne   .skip
 
+.restart_song:
 // play a song
-	lda   v_volume
+	lda   i_volume
 	sta   {MSU_VOLUME}
-	ldx   v_track_number
+	ldx   i_track_number
 	stx   {MSU_TRACK}
-
-// currently hardcoded: loop flag.
-// TODO: implement this gameboy-side
-	lda.b #3
+	lda   i_play_mode
 	sta   {MSU_CONTROL}
 
 // reset restart flag
 	lda.b #0
-	sta   v_ask_restart
+	sta   i_ask_restart
 
-.no_restart:
+.skip:
 	plp
 	rti	// this is an interrupt routine, so we use this
 

@@ -34,10 +34,17 @@ _PlayMusicID::
 	call FarCopyData
 ; modify packet template
 	ld a, 1
-	ld [wMSU1PacketSend+5], a
+	ld [wMSU1PacketSend+5], a	; ask for a restart
 	ld a, [wCurrentMusicID]
 	inc a				; track 0 = track 1
-	ld [wMSU1PacketSend+6], a
+	ld [wMSU1PacketSend+6], a	; set new track ID
+	dec a
+	ld c, a
+	ld b, 0
+	ld hl, MSU1_PlayModes
+	add hl, bc
+	ld a, [hl]
+	ld [wMSU1PacketSend+9], a	; set looping mode
 ; send it over!
 	ld de,wMSU1PacketSend
 	ld b, BANK(TransferPacket)
@@ -45,3 +52,4 @@ _PlayMusicID::
 	jp Bankswitch
 
 INCLUDE "data/audio/music_entries.asm"
+INCLUDE "data/audio/msu1_playmodes.asm"

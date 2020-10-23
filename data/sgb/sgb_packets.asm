@@ -339,7 +339,8 @@ DataSnd_725b8: DATA_SND $810, $0, 11
 ;  SNES code
 
 JumpToMSU1EntryPoint: JUMP $1810, 0, 0, 0
-MSU1SoundTemplate: DATA_SND $1800, $0, 2
-	db  $01, $FF
-	ds 9, 0
+MSU1SoundTemplate: DATA_SND $1800, $0, 5
+	;   R #l #h  V    M
+	db  1, 0, 0, $FF, 0
+	ds 6, 0
 INCLUDE "audio/msu1/_bootstrap.asm"
