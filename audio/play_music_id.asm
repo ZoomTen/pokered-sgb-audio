@@ -44,4 +44,4 @@ _PlayMusicID::
 	ld hl,TransferPacket
 	jp Bankswitch
 
-INCLUDE "audio/headers/music_entries.asm"
+INCLUDE "data/audio/music_entries.asm"
