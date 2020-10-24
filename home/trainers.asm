@@ -395,6 +395,8 @@ CheckIfAlreadyEngaged::
 	ret
 
 PlayTrainerMusic::
+	xor a
+	ld [wCheckAndFadeMusicID], a	; prevent trainer music from fading in
 	ld a, [wEngagedTrainerClass]
 	cp OPP_RIVAL1
 	ret z
@@ -405,10 +407,10 @@ PlayTrainerMusic::
 	ld a, [wGymLeaderNo]
 	and a
 	ret nz
-	xor a
-	ld [wAudioFadeOutControl], a
-	ld a, SFX_STOP_ALL_MUSIC
-	call PlaySound
+	;xor a
+	;ld [wAudioFadeOutControl], a
+	;ld a, SFX_STOP_ALL_MUSIC
+	;call PlaySound
 	ld a, BANK(Music_MeetEvilTrainer)
 	ld [wAudioROMBank], a
 	ld [wAudioSavedROMBank], a

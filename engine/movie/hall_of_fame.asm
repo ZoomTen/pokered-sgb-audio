@@ -33,6 +33,8 @@ AnimateHallOfFame:
 .skipInc
 	ld a, $90
 	ldh [hWY], a
+	ld a, %00000010
+	ld [wCheckAndFadeMusicID], a	; fade in HoF music
 	ld a, Mus_HallOfFame
 	call PlayMusicID
 	ld hl, wPartySpecies

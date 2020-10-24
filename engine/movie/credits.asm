@@ -21,8 +21,10 @@ HallOfFamePC:
 	ld a, %11000000
 	ldh [rBGP], a
 	call EnableLCD
-	ld a, SFX_STOP_ALL_MUSIC
-	call PlaySoundWaitForCurrent
+	;ld a, SFX_STOP_ALL_MUSIC
+	;call PlaySoundWaitForCurrent
+	ld a, %00000010
+	ld [wCheckAndFadeMusicID], a	; fade in HoF music
 	ld a, Mus_Credits
 	call PlayMusicID
 	ld c, 128
