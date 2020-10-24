@@ -11,7 +11,7 @@ define MSU_TRACK   $2004
 define MSU_VOLUME  $2006
 define MSU_CONTROL $2007
 
-define FADING_SPEED 4
+define FADING_SPEED 4	// how much to fade with each frame
 define SGB_INT     $BB
 
 base {BASE_ADDR}
@@ -20,7 +20,8 @@ base {BASE_ADDR}
 // f_ = MSU1 controller flags
 // v_ = MSU1 controller variables
 
-// 16 bytes of RAM to be used for the interrupt
+/////////// 16 bytes of RAM to be used for the interrupt ///////////////////////
+
 i_ask_restart:	// ask to reset the MSU1 registers with parameters on packet send
 	db 0
 i_track_number:	// the new track number
@@ -34,18 +35,21 @@ f_fading:	// fading out flag
 	db 0
 v_fade_volume:	// volume of fading
 	db 0
-
-	db 0
-	db 0
-	db 0
-	db 0
-	db 0
-	db 0
-	db 0
-	db 0
+v_force_volume: // force the MSU-1 to play at this volume
 	db 0
 
-check_msu1:
+	db 0
+	db 0
+	db 0
+	db 0
+	db 0
+	db 0
+	db 0
+	db 0
+	
+//////////////////// msu1 processing code //////////////////////////////////////
+
+Check_MSU1:
 	php
 	rep #$10	// 16 bit xy
 	sep #$20	//  8 bit a
@@ -69,22 +73,27 @@ check_msu1:
 	stx   {MSU_VOLUME}
 
 // set SGB interrupt vector
-	ldx.w #interrupt_msu1
+	ldx.w #Interrupt_MSU1
 	stx   {SGB_INT}
 
 // enable interrupts:
-//              NMI for the SNES
-//              H/V for the GameBoy
-//           Joypad is essential
+//                NMI for the SNES
+//                H/V for the GameBoy
+//             Joypad is essential
 	lda.b #%10110001
 	sta   $4200
+	plp
+	cli	// enable interrupts
+	rts	// end here
+
 // no msu-1, simply return
 +
 	plp
-	cli	// enable interrupts
 	rts
 
-interrupt_msu1:
+//////////////////// msu1 interrupt code ///////////////////////////////////////
+
+Interrupt_MSU1:
 	php
 	rep #$10	// 16 bit xy
 	sep #$20	//  8 bit a
@@ -93,7 +102,7 @@ interrupt_msu1:
 	lda   {MSU_STATUS}
 	bit.b #%10000000
 	bne   .skip		// skip processing if audio is busy at the moment
-				// we can do it next interrupt
+				// we can process stuff next interrupt
 
 	lda   f_fading
 	bit.b #%00000010
@@ -111,7 +120,7 @@ interrupt_msu1:
 	lda   i_volume
 	sta   v_fade_volume
 	sta   {MSU_VOLUME}	// initial volume
-	bra .skip
+	bra .skip		// end here
 
 .restart_song:
 // play a song
@@ -131,6 +140,9 @@ interrupt_msu1:
 	sta   {MSU_VOLUME}
 	bra   .skip
 .after_fade:
+	lda.b #0
+	sta   v_fade_volume	// zero out fade volume
+	sta   {MSU_VOLUME}
 	lda   f_fading
 	bit.b #%00000001
 	bne   .restart_song	// if we also asked for a restart, do that
@@ -142,7 +154,9 @@ interrupt_msu1:
 	sta   f_fading
 .skip:
 	plp
-	rti	// this is an interrupt routine, so we use this
+	rti	// return from interrupt
+
+////////////////////////////////////////////////////////////////////////////////
 
 // print base address at the end in little endian
 // for the python script to read out

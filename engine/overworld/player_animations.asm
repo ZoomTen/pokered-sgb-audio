@@ -120,7 +120,7 @@ _LeaveMapAnim::
 	call GBFadeOutToWhite
 	jp RestoreFacingDirectionAndYScreenPos
 .playerNotStandingOnWarpPadOrHole
-	ld a, $4
+	;ld a, $4
 	call StopMusic
 	ld a, [wd732]
 	bit 6, a ; is the last used pokemon center the destination?

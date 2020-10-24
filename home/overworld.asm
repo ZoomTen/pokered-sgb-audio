@@ -758,7 +758,7 @@ HandleBlackOut::
 ; Does not print the "blacked out" message.
 
 	call GBFadeOutToBlack
-	ld a, $08
+	;ld a, $08
 	call StopMusic
 	ld hl, wd72e
 	res 5, [hl]
@@ -771,15 +771,30 @@ HandleBlackOut::
 	jp SpecialEnterMap
 
 StopMusic::
+	ld a, [wOnSGB]
+	and a
+	jr nz, .sgb
+	ld a, %00000100
 	ld [wAudioFadeOutControl], a
+	ret
+.sgb
+; copy packet template
+	ld bc, 16
+	ld a, BANK(MSU1SoundTemplate)
+	ld hl, MSU1SoundTemplate
+	ld de, wMSU1PacketSend
+	call FarCopyData
+; modify packet template
+	ld a, %00000010
+	ld [wMSU1PacketSend+5], a	; ask for a fade out
 	ld a, SFX_STOP_ALL_MUSIC
 	ld [wNewSoundID], a	; XXX: Map load sound
-	call PlaySound
-.wait
-	ld a, [wAudioFadeOutControl]
-	and a
-	jr nz, .wait
-	jp StopAllSounds
+; send it over!
+	ld a, BANK(TransferPacket)
+	ld de,wMSU1PacketSend
+	call BankswitchHome
+	call TransferPacket
+	jp BankswitchBack
 
 HandleFlyWarpOrDungeonWarp::
 	call UpdateSprites

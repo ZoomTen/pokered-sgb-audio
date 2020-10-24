@@ -468,7 +468,7 @@ Trn_UnfreezeSGBScreen:
 	call SendSGBPacket
 	reti
 
-TransferPacket:
+TransferPacket::
 	; de = pointer to the transfer data
 	;      this has to be one in the same bank
 	;      this function is located in or WRAM :upside_down:
