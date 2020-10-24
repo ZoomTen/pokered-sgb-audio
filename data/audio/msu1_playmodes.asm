@@ -1,3 +1,5 @@
+; see also constants/music_id_constants.asm
+
 MSU1_NO_LOOP      equ %00000001
 MSU1_PLAY_LOOPING equ %00000011
 
@@ -33,6 +35,7 @@ MSU1_PlayModes:
 
 	db MSU1_PLAY_LOOPING ;	Music_MeetProfOak
 	db MSU1_PLAY_LOOPING ;	Music_MeetRival
+	db MSU1_PLAY_LOOPING ;	Music_MeetRival2
 	db MSU1_PLAY_LOOPING ;	Music_MeetEvilTrainer
 	db MSU1_PLAY_LOOPING ;	Music_MeetFemaleTrainer
 	db MSU1_PLAY_LOOPING ;	Music_MeetMaleTrainer
@@ -52,5 +55,6 @@ MSU1_PlayModes:
 	db MSU1_PLAY_LOOPING ;	Music_DefeatedTrainer
 	db MSU1_PLAY_LOOPING ;	Music_DefeatedGymLeader
 
+	db MSU1_PLAY_LOOPING ;	Music_Ending
 	db MSU1_PLAY_LOOPING ;	Music_HallOfFame
 	db MSU1_NO_LOOP ;	Music_Credits

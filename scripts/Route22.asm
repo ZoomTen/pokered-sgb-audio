@@ -85,13 +85,13 @@ Route22Script0:
 	xor a ; EXCLAMATION_BUBBLE
 	ld [wWhichEmotionBubble], a
 	predef EmotionBubble
-	ld a, [wWalkBikeSurfState]
-	and a
-	jr z, .asm_50f4e
-	ld a, SFX_STOP_ALL_MUSIC
-	ld [wNewSoundID], a
-	call PlaySound
-.asm_50f4e
+	;ld a, [wWalkBikeSurfState]
+	;and a
+	;jr z, .asm_50f4e
+	;ld a, SFX_STOP_ALL_MUSIC
+	;ld [wNewSoundID], a
+	;call PlaySound
+;.asm_50f4e
 	ld a, Mus_MeetRival
 	call PlayMusicID
 	ld a, $1
@@ -166,10 +166,11 @@ Route22Script2:
 	ld a, $1
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
-	ld a, SFX_STOP_ALL_MUSIC
-	ld [wNewSoundID], a
-	call PlaySound
-	farcall Music_RivalAlternateStart
+	;ld a, SFX_STOP_ALL_MUSIC
+	;ld [wNewSoundID], a
+	;call PlaySound
+	ld a, Mus_MeetRival2
+	call PlayMusicID
 	ld a, [wcf0d]
 	cp $1
 	jr nz, .asm_50fff
@@ -244,10 +245,11 @@ Route22Script_5104e:
 	ld [wNewSoundID], a
 	call PlaySound
 .skipYVisibilityTesta
-	ld a, SFX_STOP_ALL_MUSIC
-	ld [wNewSoundID], a
-	call PlaySound
-	farcall Music_RivalAlternateTempo
+	;ld a, SFX_STOP_ALL_MUSIC
+	;ld [wNewSoundID], a
+	;call PlaySound
+	ld a, Mus_MeetRival
+	call PlayMusicID
 	ld a, $2
 	ldh [hSpriteIndex], a
 	call Route22MoveRivalSprite
@@ -325,10 +327,11 @@ Route22Script5:
 	ld a, $2
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
-	ld a, SFX_STOP_ALL_MUSIC
-	ld [wNewSoundID], a
-	call PlaySound
-	farcall Music_RivalAlternateStartAndTempo
+	;ld a, SFX_STOP_ALL_MUSIC
+	;ld [wNewSoundID], a
+	;call PlaySound
+	ld a, Mus_MeetRival2
+	call PlayMusicID
 	ld a, [wcf0d]
 	cp $1
 	jr nz, .asm_51134

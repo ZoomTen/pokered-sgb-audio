@@ -440,7 +440,8 @@ OaksLabScript13:
 	ld a, $10
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
-	farcall Music_RivalAlternateStart
+	ld a, Mus_MeetRival2
+	call PlayMusicID
 	ld a, $1
 	ldh [hSpriteIndex], a
 	ld de, .RivalExitMovement
@@ -509,10 +510,11 @@ OaksLabScript15:
 	xor a
 	ldh [hJoyHeld], a
 	call EnableAutoTextBoxDrawing
-	ld a, SFX_STOP_ALL_MUSIC
-	ld [wNewSoundID], a
-	call PlaySound
-	farcall Music_RivalAlternateStart
+	;ld a, SFX_STOP_ALL_MUSIC
+	;ld [wNewSoundID], a
+	;call PlaySound
+	ld a, Mus_MeetRival2
+	call PlayMusicID
 	ld a, $15
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
@@ -610,10 +612,11 @@ OaksLabScript16:
 	xor a ; NPC_MOVEMENT_DOWN
 	call FillMemory
 	ld [hl], $ff
-	ld a, SFX_STOP_ALL_MUSIC
-	ld [wNewSoundID], a
-	call PlaySound
-	farcall Music_RivalAlternateStart
+	;ld a, SFX_STOP_ALL_MUSIC
+	;ld [wNewSoundID], a
+	;call PlaySound
+	ld a, Mus_MeetRival2
+	call PlayMusicID
 	ld a, $1
 	ldh [hSpriteIndex], a
 	ld de, wNPCMovementDirections2

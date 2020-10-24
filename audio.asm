@@ -356,7 +356,6 @@ SECTION "Audio Engine 1", ROMX
 
 INCLUDE "audio/play_battle_music.asm"
 INCLUDE "audio/engine_1.asm"
-INCLUDE "audio/alternate_tempo.asm"
 
 
 SECTION "Low Health Alarm (Audio Engine 2)", ROMX

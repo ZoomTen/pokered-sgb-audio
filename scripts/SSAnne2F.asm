@@ -145,8 +145,8 @@ SSAnne2Script2:
 	call MoveSprite
 	ld a, SFX_STOP_ALL_MUSIC
 	ld [wNewSoundID], a
-	call PlaySound
-	farcall Music_RivalAlternateStart
+	ld a, Mus_MeetRival2
+	call PlayMusicID
 	ld a, $3
 	ld [wSSAnne2FCurScript], a
 	ret

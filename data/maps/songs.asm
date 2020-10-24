@@ -117,7 +117,7 @@ MapSongIDs::
 	db Mus_SSAnne ;unused
 	db Mus_SSAnne ;unused
 	db Mus_SSAnne ;unused
-	db Mus_Pallet ; HallofFameRoom
+	db Mus_Ending ; HallofFameRoom
 	db Mus_Routes1 ; UndergroundPathNS
 	db Mus_IndigoPlateau ; Gary
 	db Mus_Routes1 ; UndergroundPathWE

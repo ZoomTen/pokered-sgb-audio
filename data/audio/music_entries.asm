@@ -1,3 +1,5 @@
+; see also constants/music_id_constants.asm
+
 music_entry: MACRO
 	db BANK(\1), ((\1 - SFX_Headers_1) / 3)
 ENDM
@@ -34,6 +36,7 @@ MusicEntries:
 
 	music_entry	Music_MeetProfOak
 	music_entry	Music_MeetRival
+	music_entry	Music_MeetRival
 	music_entry	Music_MeetEvilTrainer
 	music_entry	Music_MeetFemaleTrainer
 	music_entry	Music_MeetMaleTrainer
@@ -53,5 +56,6 @@ MusicEntries:
 	music_entry	Music_DefeatedTrainer
 	music_entry	Music_DefeatedGymLeader
 
+	music_entry	Music_Cities1
 	music_entry	Music_HallOfFame
 	music_entry	Music_Credits

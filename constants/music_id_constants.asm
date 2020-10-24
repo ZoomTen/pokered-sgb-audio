@@ -3,6 +3,9 @@
 
 ; MSU-1 track numbers follow this, but add one to every constant
 
+; see also data/audio/music_entries.asm
+;          data/audio/msu1_playmodes.asm
+
 ; beginning screens
 	const Mus_Intro			; 0
 	const Mus_TitleScreen		; 1
@@ -35,24 +38,26 @@
 ; encounters
 	const Mus_MeetProfOak		; 25
 	const Mus_MeetRival		; 26
-	const Mus_MeetEvilTrainer	; 27
-	const Mus_MeetFemaleTrainer	; 28
-	const Mus_MeetMaleTrainer	; 29
+	const Mus_MeetRival2		; 27
+	const Mus_MeetEvilTrainer	; 28
+	const Mus_MeetFemaleTrainer	; 29
+	const Mus_MeetMaleTrainer	; 30
 ; events
-	const Mus_FollowMe		; 30
-	const Mus_Evolution		; 31
-	const Mus_BikeRiding		; 32
-	const Mus_Surfing		; 33
-	const Mus_Jigglypuff		; 34
+	const Mus_FollowMe		; 31
+	const Mus_Evolution		; 32
+	const Mus_BikeRiding		; 33
+	const Mus_Surfing		; 34
+	const Mus_Jigglypuff		; 35
 ; battles
-	const Mus_WildBattle		; 35
-	const Mus_TrainerBattle		; 36
-	const Mus_GymLeaderBattle	; 37
-	const Mus_ChampionBattle	; 38
+	const Mus_WildBattle		; 36
+	const Mus_TrainerBattle		; 37
+	const Mus_GymLeaderBattle	; 38
+	const Mus_ChampionBattle	; 39
 ; victories
-	const Mus_DefeatedWildMon	; 39
-	const Mus_DefeatedTrainer	; 40
-	const Mus_DefeatedGymLeader	; 41
+	const Mus_DefeatedWildMon	; 40
+	const Mus_DefeatedTrainer	; 41
+	const Mus_DefeatedGymLeader	; 42
 ; end
-	const Mus_HallOfFame		; 42
-	const Mus_Credits		; 43
+	const Mus_Ending		; 43
+	const Mus_HallOfFame		; 44
+	const Mus_Credits		; 45
