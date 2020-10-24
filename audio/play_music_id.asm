@@ -1,5 +1,18 @@
 _PlayMusicID::
 	; d = Music to play
+	ld a, [wNewSoundID]
+	ld [wLastMusicSoundID],a
+
+	ld a, [wCheckAndFadeMusicID]
+	bit 0, a	; check for dupe flag
+	jr z, .skip_dupe_id_check
+	ld a, [wCurrentMusicID]
+	cp d
+	jr nz, .skip_dupe_id_check
+	xor a
+	ld [wCheckAndFadeMusicID], a
+	ret	; stop here if the track is a dupe of the prev. one
+.skip_dupe_id_check
 	ld a, d
 	ld [wCurrentMusicID], a
 	cp $FF
@@ -7,25 +20,46 @@ _PlayMusicID::
 	add a				; up to 127 tracks for now out of the theoretical 255
 	ld c, a
 	xor a
-	ld [wAudioFadeOutControl], a
 	ld b, a
 	ld hl, MusicEntries
 	add hl, bc
+
+	ld a, [wCheckAndFadeMusicID]
+	and a, %00000010
+	jr z, .load_audio_bank_immediately
+	rlca
+	ld [wAudioFadeOutControl], a
+	ld a, [hli]
+	ld [wAudioSavedROMBank], a
+	ld [wMusicIDBank], a
+	jr .check_sgb
+.load_audio_bank_immediately
 	ld a, [hli]
 	ld [wAudioROMBank], a
-	ld [wAudioSavedROMBank], a
-
+	ld [wMusicIDBank], a
+.check_sgb
 	ld a, [wOnSGB]
 	and a
 	jr nz, .play_sgb
+
+	xor a
+	ld [wCheckAndFadeMusicID], a
 
 	ld a, [hl]
 	ld [wNewSoundID], a
 	jp PlaySound
 .stop_sound
-	ld a, [wOnSGB]
+	xor a
+	ld [wCheckAndFadeMusicID], a
+	ld a, $FF
 	jp PlaySound
 .play_sgb
+; shutdown music
+	ld a, $FF
+	ld [wNewSoundID], a
+	ld [wSoundID], a
+	inc a
+	ld [wAudioFadeOutControl], a
 ; copy packet template
 	ld bc, 16
 	ld a, BANK(MSU1SoundTemplate)
@@ -33,7 +67,11 @@ _PlayMusicID::
 	ld de, wMSU1PacketSend
 	call FarCopyData
 ; modify packet template
-	ld a, 1
+	ld a, [wMusicIDBank]
+	ld [wAudioROMBank], a		; set audio bank immediately regardless
+	ld a, [wCheckAndFadeMusicID]
+	and a, %00000010		; grab just the fade bit
+	or a, 1				; enable restart
 	ld [wMSU1PacketSend+5], a	; ask for a restart
 	ld a, [wCurrentMusicID]
 	inc a				; track 0 = track 1

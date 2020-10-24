@@ -8,16 +8,8 @@ PlayDefaultMusic::
 
 PlayDefaultMusicFadeOutCurrent::
 ; Fade out the current music and then play the default music.
-	jr PlayDefaultMusicCommon
-	ld c, 10
-	ld d, 0
-	ld a, [wd72e]
-	bit 5, a ; has a battle just ended?
-	jr z, PlayDefaultMusicCommon
-	xor a
-	ld [wLastMusicSoundID], a
-	ld c, 8
-	ld d, c
+	ld a, %00000011
+	ld [wCheckAndFadeMusicID], a
 
 PlayDefaultMusicCommon::
 	ld a, [wWalkBikeSurfState]
@@ -26,45 +18,13 @@ PlayDefaultMusicCommon::
 	cp $2
 	jr z, .surfing
 	ld a, Mus_BikeRiding
-	jr .next
-
+	jr .walking
 .surfing
 	ld a, Mus_Surfing
-
-.next
-	ld b, a
-	ld a, d
-	and a ; should current music be faded out first?
-	ld a, BANK(Music_BikeRiding)
-	jr nz, .next2
-
-; Only change the audio ROM bank if the current music isn't going to be faded
-; out before the default music begins.
-	ld [wAudioROMBank], a
-
-.next2
-; [wAudioSavedROMBank] will be copied to [wAudioROMBank] after fading out the
-; current music (if the current music is faded out).
-	ld [wAudioSavedROMBank], a
-	jr .next3
-
 .walking
 	ld a, [wMapMusicSoundID]
-	ld b, a
-	call CompareMapMusicBankWithCurrentBank
-	jr c, .next4
-
-.next3
-	ld a, [wLastMusicSoundID]
-	cp b ; is the default music already playing?
-	ret z ; if so, do nothing
-
-.next4
-	ld a, c
-	ld [wAudioFadeOutControl], a
-	ld a, b
-	ld [wLastMusicSoundID], a
-	jp PlayMusicID
+	call PlayMusicID
+	ret
 
 UpdateMusic6Times::
 ; This is called when entering a map, before fading out the current music and

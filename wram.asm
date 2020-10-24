@@ -3118,6 +3118,15 @@ wBoxMonNicksEnd::
 wBoxDataEnd::
 
 wCurrentMusicID:: db
+wMusicIDBank:: db
+wCheckAndFadeMusicID::
+	; FR
+	; 00 = don't fade, repeat music ID
+	; 01 = don't fade, don't repeat music ID
+	; 10 = fade,       repeat ID
+	; 11 = fade,       don't repeat music ID
+	db
+
 wMSU1PacketSend:: ds 16
 
 
