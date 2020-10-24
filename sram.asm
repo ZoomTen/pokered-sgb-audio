@@ -43,7 +43,3 @@ sBox11:: ds wBoxDataEnd - wBoxDataStart
 sBox12:: ds wBoxDataEnd - wBoxDataStart
 sBank3AllBoxesChecksum:: ds 1
 sBank3IndividualBoxChecksums:: ds 6
-
-SECTION "Tileset Saves", SRAM ; BANK 4
-sTilesetBackup:: ds $1000
-sTilemapBackup:: ds 13 * 32	;partial backup
