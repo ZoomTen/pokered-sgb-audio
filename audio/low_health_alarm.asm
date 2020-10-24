@@ -19,8 +19,12 @@ Music_DoLowHealthAlarm::
 	call .playToneLo  ;actually set the sound registers.
 
 .asm_2138a
+	ld a, [wOnSGB]
+	and a
+	jr nz, .continue_0		; skip if on SGB
 	ld a, $86
 	ld [wChannelSoundIDs + Ch5], a ;disable sound channel?
+.continue_0
 	ld a, [wLowHealthAlarm]
 	and $7f ;decrement alarm timer.
 	dec a
@@ -35,6 +39,7 @@ Music_DoLowHealthAlarm::
 	xor a
 	ld [wLowHealthAlarm], a  ;disable alarm
 	ld [wChannelSoundIDs + Ch5], a  ;re-enable sound channel?
+	ld [wChannelSoundIDs + Ch6], a  ;re-enable sound channel?
 	ld de, .toneDataSilence
 	jr .playTone
 
@@ -49,13 +54,20 @@ Music_DoLowHealthAlarm::
 
 ;update sound channel 1 to play the alarm, overriding all other sounds.
 .playTone
-	ld hl, rNR10 ;channel 1 sound register
-	ld c, $5
+	ld a, [wOnSGB]
+	and a
+	jr z, .notSGB
+	ld hl, rNR21 	; channel 2 sound register, so the select SFX can play
+	jr .continue
+.notSGB
+	ld hl, rNR10 	;channel 1 sound register
 	xor a
-
+	ld [hli], a	; always clear sweep
+.continue
+	ld c, $5
 .copyLoop
-	ld [hli], a
 	ld a, [de]
+	ld [hli], a
 	inc de
 	dec c
 	jr nz, .copyLoop

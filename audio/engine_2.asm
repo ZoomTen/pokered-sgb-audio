@@ -160,16 +160,23 @@ Audio2_PlayNextNote:
 	res BIT_PITCH_SLIDE_ON, [hl]
 	res BIT_PITCH_SLIDE_DECREASING, [hl]
 	; --- this section is only present in this copy of the sound engine
+	ld a, [wOnSGB]
+	and a
+	jr z, .gb
+	ld a, c
+	cp Ch6
+	jr nz, .beginChecks
+	jr .lowhealth
+.gb
 	ld a, c
 	cp Ch5
 	jr nz, .beginChecks
+.lowhealth
 	ld a, [wLowHealthAlarm] ; low health alarm enabled?
 	bit 7, a
 	ret nz
 .beginChecks
 	; ---
-	call Audio2_sound_ret
-	ret
 
 Audio2_sound_ret:
 	call Audio2_GetNextMusicByte
