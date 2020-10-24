@@ -1,10 +1,10 @@
 PlayBattleMusic::
 	xor a
-	ld [wAudioFadeOutControl], a
+	ld [wCheckAndFadeMusicID], a
 	ld [wLowHealthAlarm], a
-	dec a ; SFX_STOP_ALL_MUSIC
-	ld [wNewSoundID], a
-	call PlayMusicID
+	;dec a ; SFX_STOP_ALL_MUSIC
+	;ld [wNewSoundID], a
+	;call PlayMusicID
 	call DelayFrame
 	;ld c, BANK(Music_GymLeaderBattle)
 	ld a, [wGymLeaderNo]
