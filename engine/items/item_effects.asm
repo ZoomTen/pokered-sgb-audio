@@ -660,8 +660,8 @@ ItemUseBicycle:
 	ldh [hJoyHeld], a ; current joypad state
 	inc a
 	ld [wWalkBikeSurfState], a ; change player state to bicycling
-	ld hl, GotOnBicycleText
 	call PlayDefaultMusic ; play bike riding music
+	ld hl, GotOnBicycleText
 .printText
 	jp PrintText
 
