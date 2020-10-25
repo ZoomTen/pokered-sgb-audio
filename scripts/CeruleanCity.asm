@@ -68,9 +68,8 @@ ENDC
 	ld a, [wWalkBikeSurfState]
 	and a
 	jr z, .asm_19512
-	ld a, SFX_STOP_ALL_MUSIC
-	ld [wNewSoundID], a
-	call PlaySound
+	xor a
+	ld [wCheckAndFadeMusicID], a	; prevent fading in
 .asm_19512
 	ld a, Mus_MeetRival
 	call PlayMusicID
@@ -174,9 +173,11 @@ CeruleanCityScript2:
 	ld a, $1
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
-	ld a, SFX_STOP_ALL_MUSIC
-	ld [wNewSoundID], a
-	call PlaySound
+	;ld a, SFX_STOP_ALL_MUSIC
+	;ld [wNewSoundID], a
+	;call PlaySound
+	xor a
+	ld [wCheckAndFadeMusicID], a	; prevent fading in
 	ld a, Mus_MeetRival2
 	call PlayMusicID
 	ld a, $1

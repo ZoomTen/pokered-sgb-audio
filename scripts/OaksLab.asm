@@ -350,6 +350,8 @@ OaksLabScript10:
 	call SetSpriteFacingDirectionAndDelay
 	ld a, PLAYER_DIR_UP
 	ld [wPlayerMovingDirection], a
+	xor a
+	ld [wCheckAndFadeMusicID], a	; prevent fading in
 	ld a, Mus_MeetRival
 	call PlayMusicID
 	ld a, $f
@@ -440,6 +442,8 @@ OaksLabScript13:
 	ld a, $10
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
+	xor a
+	ld [wCheckAndFadeMusicID], a	; prevent fading in
 	ld a, Mus_MeetRival2
 	call PlayMusicID
 	ld a, $1
@@ -513,6 +517,8 @@ OaksLabScript15:
 	;ld a, SFX_STOP_ALL_MUSIC
 	;ld [wNewSoundID], a
 	;call PlaySound
+	xor a
+	ld [wCheckAndFadeMusicID], a	; prevent fading in
 	ld a, Mus_MeetRival2
 	call PlayMusicID
 	ld a, $15
@@ -615,6 +621,8 @@ OaksLabScript16:
 	;ld a, SFX_STOP_ALL_MUSIC
 	;ld [wNewSoundID], a
 	;call PlaySound
+	xor a
+	ld [wCheckAndFadeMusicID], a	; prevent fading in
 	ld a, Mus_MeetRival2
 	call PlayMusicID
 	ld a, $1

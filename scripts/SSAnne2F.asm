@@ -24,9 +24,8 @@ SSAnne2Script0:
 	ld hl, CoordsData_61411
 	call ArePlayerCoordsInArray
 	ret nc
-	ld a, SFX_STOP_ALL_MUSIC
-	ld [wNewSoundID], a
-	call PlaySound
+	xor a
+	ld [wCheckAndFadeMusicID], a	; prevent fading in
 	ld a, Mus_MeetRival
 	call PlayMusicID
 	ld a, [wCoordIndex]
@@ -143,8 +142,10 @@ SSAnne2Script2:
 	ld a, $2
 	ldh [hSpriteIndex], a
 	call MoveSprite
-	ld a, SFX_STOP_ALL_MUSIC
-	ld [wNewSoundID], a
+	;ld a, SFX_STOP_ALL_MUSIC
+	;ld [wNewSoundID], a
+	xor a
+	ld [wCheckAndFadeMusicID], a	; prevent fading in
 	ld a, Mus_MeetRival2
 	call PlayMusicID
 	ld a, $3

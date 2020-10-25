@@ -29,6 +29,8 @@ ENDC
 	;ld a, SFX_STOP_ALL_MUSIC
 	;ld [wNewSoundID], a
 	;call PlaySound
+	xor a
+	ld [wCheckAndFadeMusicID], a	; prevent fading in
 	ld a, Mus_MeetRival
 	call PlayMusicID
 	ResetEvent EVENT_POKEMON_TOWER_RIVAL_ON_LEFT
@@ -82,6 +84,8 @@ PokemonTower2Script1:
 	;ld a, SFX_STOP_ALL_MUSIC
 	;ld [wNewSoundID], a
 	;call PlaySound
+	xor a
+	ld [wCheckAndFadeMusicID], a	; prevent fading in
 	ld a, Mus_MeetRival2
 	call PlayMusicID
 	ld a, $2

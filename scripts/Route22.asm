@@ -92,6 +92,8 @@ Route22Script0:
 	;ld [wNewSoundID], a
 	;call PlaySound
 ;.asm_50f4e
+	xor a
+	ld [wCheckAndFadeMusicID], a	; prevent fading in
 	ld a, Mus_MeetRival
 	call PlayMusicID
 	ld a, $1
@@ -169,6 +171,8 @@ Route22Script2:
 	;ld a, SFX_STOP_ALL_MUSIC
 	;ld [wNewSoundID], a
 	;call PlaySound
+	xor a
+	ld [wCheckAndFadeMusicID], a	; prevent fading in
 	ld a, Mus_MeetRival2
 	call PlayMusicID
 	ld a, [wcf0d]
@@ -248,6 +252,8 @@ Route22Script_5104e:
 	;ld a, SFX_STOP_ALL_MUSIC
 	;ld [wNewSoundID], a
 	;call PlaySound
+	xor a
+	ld [wCheckAndFadeMusicID], a	; prevent fading in
 	ld a, Mus_MeetRival
 	call PlayMusicID
 	ld a, $2
@@ -330,6 +336,8 @@ Route22Script5:
 	;ld a, SFX_STOP_ALL_MUSIC
 	;ld [wNewSoundID], a
 	;call PlaySound
+	xor a
+	ld [wCheckAndFadeMusicID], a	; prevent fading in
 	ld a, Mus_MeetRival2
 	call PlayMusicID
 	ld a, [wcf0d]
