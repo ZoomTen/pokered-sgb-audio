@@ -19,11 +19,16 @@ PlayDefaultMusicCommon::
 	cp $2
 	jr z, .surfing
 	ld a, Mus_BikeRiding
-	jr .walking
+	jr .play_music
 .surfing
 	ld a, Mus_Surfing
+	jr .play_music
 .walking
+	call LoadMapMusic	; force reload map music
+				; since standard save files store a MapMusicSoundID
+				; that's not this kinda system
 	ld a, [wMapMusicSoundID]
+.play_music
 	call PlayMusicID
 	ret
 

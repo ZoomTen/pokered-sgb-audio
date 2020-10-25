@@ -2280,6 +2280,7 @@ LoadMapHeader::
 	ld a, [wCurMapWidth] ; map width in 4x4 tile blocks
 	add a ; double it
 	ld [wCurrentMapWidth2], a ; map width in 2x2 tile blocks
+LoadMapMusic::
 	ld a, [wCurMap]
 	ld c, a
 	ld b, $00

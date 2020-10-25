@@ -1,27 +1,7 @@
 LoadTilesetHeader:
 	call GetPredefRegisters
 	push hl
-	ld d, 0
-	ld a, [wCurMapTileset]
-	add a
-	add a
-	ld b, a
-	add a
-	add b ; a = tileset * 12
-	jr nc, .noCarry
-	inc d
-.noCarry
-	ld e, a
-	ld hl, Tilesets
-	add hl, de
-	ld de, wTilesetBank
-	ld c, $b
-.copyTilesetHeaderLoop
-	ld a, [hli]
-	ld [de], a
-	inc de
-	dec c
-	jr nz, .copyTilesetHeaderLoop
+	call LoadTilesetHeaderOnly
 	ld a, [hl]
 	ldh [hTilesetType], a
 	xor a
@@ -54,6 +34,30 @@ LoadTilesetHeader:
 	ld [wXBlockCoord], a
 .done
 	ret
+
+LoadTilesetHeaderOnly:
+	ld d, 0
+	ld a, [wCurMapTileset]
+	add a
+	add a
+	ld b, a
+	add a
+	add b ; a = tileset * 12
+	jr nc, .noCarry
+	inc d
+.noCarry
+	ld e, a
+	ld hl, Tilesets
+	add hl, de
+	ld de, wTilesetBank
+	ld c, $b
+.copyTilesetHeaderLoop
+	ld a, [hli]
+	ld [de], a
+	inc de
+	dec c
+	ret z
+	jr .copyTilesetHeaderLoop
 
 INCLUDE "data/tilesets/dungeon_tilesets.asm"
 
