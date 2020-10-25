@@ -1,3 +1,7 @@
+// MSU1 bootstrapping code. This sets up the MSU1 interrupts for track manip.
+// upon SGB packet send, e.g. track loading, track fading, track "ducking"
+// on fanfare play.
+
 // 65816 code to be compiled with XKAS
 arch snes.cpu
 
@@ -22,21 +26,26 @@ base {BASE_ADDR}
 
 /////////// 16 bytes of RAM to be used for the interrupt ///////////////////////
 
-i_ask_restart:	// ask to reset the MSU1 registers with parameters on packet send
-	db 0
-i_track_number:	// the new track number
-	dw 0
-i_volume:	// the initial volume
-	db $FF
-i_play_mode:	// the play mode of the new track
-	db 0
+i_ask_restart:	// $1800
+	db 0	// ask to reset the MSU1 registers with parameters ($1801-$1803)
 
-f_fading:	// fading out flag
-	db 0
-v_fade_volume:	// volume of fading
-	db 0
-v_force_volume: // force the MSU-1 to play at this volume
-	db 0
+i_track_number:	// $1801
+	dw 0	// the new track number
+
+i_volume:	// $1803
+	db $FF	// the initial volume
+
+i_play_mode:	// $1804
+	db 0	// the play mode of the new track
+
+f_fading:	// $1805
+	db 0	// fading out flag, follows i_ask_restart
+
+v_fade_volume:	// $1806
+	db 0	// current fade volume
+
+i_force_volume: // $1807
+	db 0	// force the MSU-1 to play at this volume
 
 	db 0
 	db 0
@@ -47,7 +56,7 @@ v_force_volume: // force the MSU-1 to play at this volume
 	db 0
 	db 0
 	
-//////////////////// msu1 processing code //////////////////////////////////////
+//////////////////// msu1 setup code ///////////////////////////////////////////
 
 Check_MSU1:
 	php
@@ -55,14 +64,14 @@ Check_MSU1:
 	sep #$20	//  8 bit a
 
 // check for msu-1
-	ldx   {MSU_ID}	//
-	cpx.w #$2D53	// 'S-'
+	ldx   {MSU_ID}		//
+	cpx.w #$2D53		// 'S-'
 	bne   +
 	ldx   {MSU_TRACK}	// MSU_ID + 2
-	cpx.w #$534D	// 'MS'
+	cpx.w #$534D		// 'MS'
 	bne   +
-	ldx   {MSU_VOLUME}// MSU_ID + 4
-	cpx.w #$3155	// 'U1'
+	ldx   {MSU_VOLUME}	// MSU_ID + 4
+	cpx.w #$3155		// 'U1'
 	bne   +
 
 // reset msu-1 registers
@@ -107,7 +116,19 @@ Interrupt_MSU1:
 	lda   f_fading
 	bit.b #%00000010
 	bne   .do_fade          // if we are fading out, jump to fade routine
+	
+	lda   i_force_volume
+	cmp.b #0
+	beq   .reset_volume	// don't force volume when forced volume = muted
+	
+	sta   {MSU_VOLUME}
+	bra   .process_audio
 
+.reset_volume:
+	lda   i_volume
+	sta   {MSU_VOLUME}	// reset msu1 volume
+
+.process_audio:
 	lda   i_ask_restart
 	bit.b #%00000011
 	beq   .skip		// if we're not asking for a restart or fade, skip
@@ -139,14 +160,17 @@ Interrupt_MSU1:
 	sta   v_fade_volume
 	sta   {MSU_VOLUME}
 	bra   .skip
+
 .after_fade:
 	lda.b #0
 	sta   v_fade_volume	// zero out fade volume
-	sta   {MSU_VOLUME}
 	lda   f_fading
 	bit.b #%00000001
 	bne   .restart_song	// if we also asked for a restart, do that
-// otherwise, clear flags and fall through
+	sta   i_volume		// otherwise, zero out track volume (see .reset_volume)
+	sta   {MSU_VOLUME}
+
+// and clear flags and fall through
 
 .reset_flags:
 	lda.b #0

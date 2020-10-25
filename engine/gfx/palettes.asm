@@ -468,6 +468,19 @@ Trn_UnfreezeSGBScreen:
 	call SendSGBPacket
 	reti
 
+Trn_DuckMusic::
+	di
+	ld hl, DuckMusicPacket
+	call SendSGBPacket
+	reti
+
+Trn_UnduckMusic::
+	di
+	ld hl, UnduckMusicPacket
+	call SendSGBPacket
+	reti
+
+
 TransferPacket::
 	; de = pointer to the transfer data
 	;      this has to be one in the same bank

@@ -501,6 +501,7 @@ TextCommand_PAUSE::
 
 TextCommand_SOUND::
 ; play a sound effect from TextCommandSounds
+	call DuckMusicOnSGB
 	pop hl
 	push bc
 	dec hl
@@ -525,6 +526,7 @@ TextCommand_SOUND::
 	ld a, [hl]
 	call PlaySound
 	call WaitForSoundToFinish
+	call UnduckMusicOnSGB
 	pop hl
 	pop bc
 	jp NextTextCommand

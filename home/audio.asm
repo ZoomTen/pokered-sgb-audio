@@ -190,3 +190,17 @@ PlayMusicID::
 	homecall _PlayMusicID
 	pop de
 	ret
+
+DuckMusicOnSGB::
+	ld a, [wOnSGB]
+	and a
+	ret z
+	homecall Trn_DuckMusic
+	ret
+
+UnduckMusicOnSGB::
+	ld a, [wOnSGB]
+	and a
+	ret z
+	homecall Trn_UnduckMusic
+	ret

@@ -343,4 +343,10 @@ MSU1SoundTemplate:: DATA_SND $1800, $0, 5
 	;   R #l #h  V    M
 	db  1, 0, 0, $FF, 0
 	ds 6, 0
+DuckMusicPacket:: DATA_SND $1807, $0, 1
+	db  255/3
+	ds 10, 0
+UnduckMusicPacket:: DATA_SND $1807, $0, 1
+	db  0
+	ds 10, 0
 INCLUDE "audio/msu1/_bootstrap.asm"
