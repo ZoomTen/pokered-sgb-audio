@@ -501,7 +501,6 @@ TextCommand_PAUSE::
 
 TextCommand_SOUND::
 ; play a sound effect from TextCommandSounds
-	call DuckMusicOnSGB
 	pop hl
 	push bc
 	dec hl
@@ -523,6 +522,9 @@ TextCommand_SOUND::
 	jr z, .pokemonCry
 	cp TX_SOUND_CRY_DEWGONG
 	jr z, .pokemonCry
+	push hl
+	call DuckMusicOnSGB
+	pop hl
 	ld a, [hl]
 	call PlaySound
 	call WaitForSoundToFinish
