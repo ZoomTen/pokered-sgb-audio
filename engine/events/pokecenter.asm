@@ -21,16 +21,12 @@ DisplayPokemonCenterDialogue_::
 	ld a, $18
 	ld [wSprite01StateData1ImageIndex], a ; make the nurse turn to face the machine
 	call Delay3
+	call StopMusic
 	predef HealParty
 	farcall AnimateHealingMachine ; do the healing machine animation
 	xor a
-	ld [wAudioFadeOutControl], a
-	ld a, [wAudioSavedROMBank]
-	ld [wAudioROMBank], a
-	ld a, [wMapMusicSoundID]
-	ld [wLastMusicSoundID], a
-	ld [wNewSoundID], a
-	call PlaySound
+	ld [wCheckAndFadeMusicID], a
+	call PlayDefaultMusic
 	ld hl, PokemonFightingFitText
 	call PrintText
 	ld a, $14
