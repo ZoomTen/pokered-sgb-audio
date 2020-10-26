@@ -759,7 +759,7 @@ HandleBlackOut::
 
 	call GBFadeOutToBlack
 	;ld a, $08
-	;call StopMusic
+	call StopMusic
 	ld hl, wd72e
 	res 5, [hl]
 	ld a, BANK(ResetStatusAndHalveMoneyOnBlackout) ; also BANK(SpecialWarpIn) and BANK(SpecialEnterMap)
@@ -767,8 +767,8 @@ HandleBlackOut::
 	ld [MBC1RomBank], a
 	call ResetStatusAndHalveMoneyOnBlackout
 	call SpecialWarpIn
-	call PlayDefaultMusicFadeOutCurrent
-	jp SpecialEnterMap
+	call SpecialEnterMap
+	jp PlayDefaultMusic
 
 StopMusic::
 	ld a, [wOnSGB]
