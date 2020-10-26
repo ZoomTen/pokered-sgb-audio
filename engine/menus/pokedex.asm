@@ -401,6 +401,7 @@ ShowPokedexDataInternal:
 	set 1, [hl]
 	ld a, $33 ; 3/7 volume
 	ldh [rNR50], a
+	call DuckMusicOnSGB
 	call GBPalWhiteOut ; zero all palettes
 	call ClearScreen
 	ld a, [wd11e] ; pokemon ID
@@ -587,6 +588,7 @@ ShowPokedexDataInternal:
 	res 1, [hl]
 	ld a, $77 ; max volume
 	ldh [rNR50], a
+	call UnduckMusicOnSGB
 	ret
 
 HeightWeightText:
