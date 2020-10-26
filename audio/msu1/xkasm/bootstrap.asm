@@ -107,12 +107,15 @@ Interrupt_MSU1:
 	rep #$10	// 16 bit xy
 	sep #$20	//  8 bit a
 	lda $4210	// acknowledge interrupt
-	
+
 	lda   {MSU_STATUS}
 	bit.b #%10000000
-	bne   .skip		// skip processing if audio is busy at the moment
-				// we can process stuff next interrupt
+	beq   .continue		// branch limits :pensive:
 
+	plp			// skip processing if audio is busy at the moment
+	rti			// we can process stuff next interrupt
+
+.continue:
 	lda   f_fading
 	bit.b #%00000010
 	bne   .do_fade          // if we are fading out, jump to fade routine
@@ -167,6 +170,7 @@ Interrupt_MSU1:
 	lda   f_fading
 	bit.b #%00000001
 	bne   .restart_song	// if we also asked for a restart, do that
+	lda.b #0
 	sta   i_volume		// otherwise, zero out track volume (see .reset_volume)
 	sta   {MSU_VOLUME}
 
