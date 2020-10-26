@@ -28,6 +28,9 @@ base {BASE_ADDR}
 
 i_ask_restart:	// $1800
 	db 0	// ask to reset the MSU1 registers with parameters ($1801-$1803)
+		// bit 0 = ask for a restart
+		// bit 1 = ask for a fade
+		// bit 7 = a new song has been loaded
 
 i_track_number:	// $1801
 	dw 0	// the new track number
@@ -109,8 +112,8 @@ Interrupt_MSU1:
 	lda $4210	// acknowledge interrupt
 
 	lda   {MSU_STATUS}
-	bit.b #%10000000
-	beq   .continue		// branch limits :pensive:
+	bit.b #%01000000
+	beq   .continue
 
 	plp			// skip processing if audio is busy at the moment
 	rti			// we can process stuff next interrupt
@@ -133,8 +136,11 @@ Interrupt_MSU1:
 
 .process_audio:
 	lda   i_ask_restart
-	bit.b #%00000011
+	bit.b #%10000011
 	beq   .skip		// if we're not asking for a restart or fade, skip
+
+	bit.b #%10000000
+	bne   .load_new_song	// load a new song if bit 7 is set
 
 	bit.b #%00000010
 	beq   .restart_song	// if we're not fading out, restart the song right away
@@ -148,12 +154,23 @@ Interrupt_MSU1:
 
 .restart_song:
 // play a song
-	lda   i_volume
-	sta   {MSU_VOLUME}
+	stz   f_fading		// always clear fade flag
+	stz   {MSU_VOLUME}	// reset MSU volume before loading
+
 	ldx   i_track_number
-	stx   {MSU_TRACK}
+	stx   {MSU_TRACK}	// load new track
+	
+	lda.b #%10000000
+	sta   i_ask_restart	// set 'new song loaded' flag
+	bra   .skip
+
+.load_new_song:
 	lda   i_play_mode
-	sta   {MSU_CONTROL}
+	sta   {MSU_CONTROL}	// set looping mode
+	
+	lda   i_volume
+	sta   {MSU_VOLUME}	// set track volume
+
 	bra   .reset_flags
 
 .do_fade:
@@ -170,16 +187,14 @@ Interrupt_MSU1:
 	lda   f_fading
 	bit.b #%00000001
 	bne   .restart_song	// if we also asked for a restart, do that
-	lda.b #0
-	sta   i_volume		// otherwise, zero out track volume (see .reset_volume)
-	sta   {MSU_VOLUME}
+	stz   i_volume		// otherwise, zero out track volume (see .reset_volume)
+	stz   {MSU_VOLUME}
 
 // and clear flags and fall through
 
 .reset_flags:
-	lda.b #0
-	sta   i_ask_restart
-	sta   f_fading
+	stz   i_ask_restart
+	stz   f_fading
 .skip:
 	plp
 	rti	// return from interrupt
