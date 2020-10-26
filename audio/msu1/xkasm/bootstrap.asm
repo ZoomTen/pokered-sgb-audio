@@ -111,21 +111,13 @@ Interrupt_MSU1:
 	sep #$20	//  8 bit a
 	lda $4210	// acknowledge interrupt
 
-	lda   {MSU_STATUS}
-	bit.b #%01000000
-	beq   .continue
-
-	plp			// skip processing if audio is busy at the moment
-	rti			// we can process stuff next interrupt
-
-.continue:
 	lda   f_fading
 	bit.b #%00000010
 	bne   .do_fade          // if we are fading out, jump to fade routine
 	
 	lda   i_force_volume
 	cmp.b #0
-	beq   .reset_volume	// don't force volume when forced volume = muted
+	beq   .reset_volume	// don't force volume when forced volume = 0
 	
 	sta   {MSU_VOLUME}
 	bra   .process_audio
@@ -165,6 +157,10 @@ Interrupt_MSU1:
 	bra   .skip
 
 .load_new_song:
+	bit   {MSU_STATUS}
+	bvs   .skip		// v flag = bit 6
+				// we hold off until the MSU is not busy
+
 	lda   i_play_mode
 	sta   {MSU_CONTROL}	// set looping mode
 	
