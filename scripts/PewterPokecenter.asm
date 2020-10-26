@@ -21,9 +21,7 @@ PewterJigglypuffText:
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	ld hl, .JigglypuffText
 	call PrintText
-
-	ld a, SFX_STOP_ALL_MUSIC
-	call PlaySound
+	call StopMusic
 	ld c, 32
 	call DelayFrames
 
@@ -41,8 +39,9 @@ PewterJigglypuffText:
 	dec hl
 
 	push hl
-	ld a, Mus_Jigglypuff
-	call PlayMusicID
+	ld c, BANK(Music_JigglypuffSong)
+	ld a, MUSIC_JIGGLYPUFF_SONG
+	call PlayMusic
 	pop hl
 
 .spinMovementLoop
