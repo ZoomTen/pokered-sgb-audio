@@ -49,6 +49,9 @@ _PlayMusicID::
 	ld [wNewSoundID], a
 	jp PlaySound
 .stop_sound
+	ld a, [wOnSGB]
+	and a
+	jr nz, .stop_sgb
 	xor a
 	ld [wCheckAndFadeMusicID], a
 	ld a, $FF
@@ -85,6 +88,11 @@ _PlayMusicID::
 	ld [wMSU1PacketSend+9], a	; set looping mode
 ; send it over!
 	ld de,wMSU1PacketSend
+	ld b, BANK(TransferPacket)
+	ld hl,TransferPacket
+	jp Bankswitch
+.stop_sgb
+	ld de,StopMusicPacket
 	ld b, BANK(TransferPacket)
 	ld hl,TransferPacket
 	jp Bankswitch

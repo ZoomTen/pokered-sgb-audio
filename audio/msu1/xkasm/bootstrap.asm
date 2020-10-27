@@ -30,6 +30,7 @@ i_ask_restart:	// $1800
 	db 0	// ask to reset the MSU1 registers with parameters ($1801-$1803)
 		// bit 0 = ask for a restart
 		// bit 1 = ask for a fade
+		// bit 5 = stop currently playing audio
 		// bit 6 = ask for update volume
 		// bit 7 = a new song has been loaded
 
@@ -117,11 +118,13 @@ Interrupt_MSU1:
 	bne   .do_fade          // if we are fading out, jump to fade routine
 
 	lda   i_ask_restart
-	bit.b #%10000011
+	bit.b #%11100011
 	bne   .process_audio
 	jmp   .skip		// if we're not asking for anything, skip processing
 
 .process_audio:
+	bit.b #%00100000
+	bne   .stop_music	// instantly halt music
 	
 	bit.b #%01000000
 	bne   .set_new_volume	// set volume to i_force_volume if bit 6 is set
@@ -139,6 +142,12 @@ Interrupt_MSU1:
 	sta   {MSU_VOLUME}	// initial volume
 	bra .skip		// end here
 
+.stop_music:
+	bit   {MSU_STATUS}
+	bvs   .skip		// v flag = bit 6
+				// we hold off until the MSU is not busy
+	stz   {MSU_CONTROL}
+	bra   .reset_flags
 
 .set_new_volume:
 	lda   i_force_volume
@@ -152,6 +161,7 @@ Interrupt_MSU1:
 	lda   i_volume
 	sta   {MSU_VOLUME}	// reset msu1 volume
 	bra   .skip
+
 .restart_song:
 // play a song
 	stz   f_fading		// always clear fade flag
