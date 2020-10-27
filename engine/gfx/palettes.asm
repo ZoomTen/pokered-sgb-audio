@@ -472,11 +472,15 @@ Trn_DuckMusic::
 	di
 	ld hl, DuckMusicPacket
 	call SendSGBPacket
+	ld hl, UpdateVolumePacket
+	call SendSGBPacket
 	reti
 
 Trn_UnduckMusic::
 	di
 	ld hl, UnduckMusicPacket
+	call SendSGBPacket
+	ld hl, UpdateVolumePacket
 	call SendSGBPacket
 	reti
 

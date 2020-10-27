@@ -343,6 +343,9 @@ MSU1SoundTemplate:: DATA_SND $1800, $0, 5
 	;   R #l #h  V    M
 	db  1, 0, 0, $FF, 0
 	ds 6, 0
+UpdateVolumePacket:: DATA_SND $1800, $0, 1
+	db  %01000000
+	ds 10, 0
 DuckMusicPacket:: DATA_SND $1807, $0, 1
 	db  255/3
 	ds 10, 0

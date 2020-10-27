@@ -30,6 +30,7 @@ i_ask_restart:	// $1800
 	db 0	// ask to reset the MSU1 registers with parameters ($1801-$1803)
 		// bit 0 = ask for a restart
 		// bit 1 = ask for a fade
+		// bit 6 = ask for update volume
 		// bit 7 = a new song has been loaded
 
 i_track_number:	// $1801
@@ -48,8 +49,8 @@ v_fade_volume:	// $1806
 	db 0	// current fade volume
 
 i_force_volume: // $1807
-	db 0	// force the MSU-1 to play at this volume
-
+	db 0	// update the MSU-1 to play at this volume
+		// when bit 6 of $1800 is set. 0 = return to i_volume
 	db 0
 	db 0
 	db 0
@@ -114,23 +115,17 @@ Interrupt_MSU1:
 	lda   f_fading
 	bit.b #%00000010
 	bne   .do_fade          // if we are fading out, jump to fade routine
-	
-	lda   i_force_volume
-	cmp.b #0
-	beq   .reset_volume	// don't force volume when forced volume = 0
-	
-	sta   {MSU_VOLUME}
-	bra   .process_audio
 
-.reset_volume:
-	lda   i_volume
-	sta   {MSU_VOLUME}	// reset msu1 volume
-
-.process_audio:
 	lda   i_ask_restart
 	bit.b #%10000011
-	beq   .skip		// if we're not asking for a restart or fade, skip
+	bne   .process_audio
+	jmp   .skip		// if we're not asking for anything, skip processing
 
+.process_audio:
+	
+	bit.b #%01000000
+	bne   .set_new_volume	// set volume to i_force_volume if bit 6 is set
+	
 	bit.b #%10000000
 	bne   .load_new_song	// load a new song if bit 7 is set
 
@@ -144,6 +139,19 @@ Interrupt_MSU1:
 	sta   {MSU_VOLUME}	// initial volume
 	bra .skip		// end here
 
+
+.set_new_volume:
+	lda   i_force_volume
+	cmp.b #0
+	beq   .reset_volume	// don't force volume when forced volume = 0
+	
+	sta   {MSU_VOLUME}
+	bra   .skip
+
+.reset_volume:
+	lda   i_volume
+	sta   {MSU_VOLUME}	// reset msu1 volume
+	bra   .skip
 .restart_song:
 // play a song
 	stz   f_fading		// always clear fade flag
