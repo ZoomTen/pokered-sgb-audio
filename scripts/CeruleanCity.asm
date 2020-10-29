@@ -68,9 +68,9 @@ ENDC
 	ld a, [wWalkBikeSurfState]
 	and a
 	jr z, .asm_19512
+.asm_19512
 	xor a
 	ld [wCheckAndFadeMusicID], a	; prevent fading in
-.asm_19512
 	ld a, Mus_MeetRival
 	call PlayMusicID
 	xor a
