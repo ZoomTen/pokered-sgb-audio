@@ -52,9 +52,12 @@ BillsHouseInitiatedText::
 	text_far _BillsHouseInitiatedText
 	text_promptbutton
 	text_asm
-	ld a, SFX_STOP_ALL_MUSIC
-	ld [wNewSoundID], a
-	call PlaySound
+	;call StopMusic	; fade out music
+	ld a, $FF
+	call PlayMusicID
+	;ld a, SFX_STOP_ALL_MUSIC
+	;ld [wNewSoundID], a
+	;call PlaySound
 	ld c, 16
 	call DelayFrames
 	ld a, SFX_SWITCH
