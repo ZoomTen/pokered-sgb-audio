@@ -44,23 +44,22 @@ SSAnne7Text1:
 SSAnne7RubText:
 	text_far _SSAnne7RubText
 	text_asm
-	ld a, [wAudioROMBank]
-	cp BANK(Audio3_UpdateMusic)
-	ld [wAudioSavedROMBank], a
-	jr nz, .asm_61908
-	ld a, SFX_STOP_ALL_MUSIC
-	ld [wNewSoundID], a
-	call PlaySound
+	ld a, $FF
+	call PlayMusicID
+;	jr nz, .asm_61908
+	;ld a, SFX_STOP_ALL_MUSIC
+	;ld [wNewSoundID], a
+	;call PlaySound
 	ld a, BANK(Music_PkmnHealed)
-	ld [wAudioROMBank], a
-.asm_61908
+	ld [wAudioROMBank], a		; forcing the bank should fix fanfare not playing on SGB
+;.asm_61908
 	ld a, MUSIC_PKMN_HEALED
 	ld [wNewSoundID], a
 	call PlaySound
-.asm_61910
+.waitHealSoundFinish
 	ld a, [wChannelSoundIDs]
 	cp MUSIC_PKMN_HEALED
-	jr z, .asm_61910
+	jr z, .waitHealSoundFinish
 	call PlayDefaultMusic
 	SetEvent EVENT_RUBBED_CAPTAINS_BACK
 	ld hl, wd72d
