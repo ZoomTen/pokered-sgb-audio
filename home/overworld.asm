@@ -758,8 +758,6 @@ HandleBlackOut::
 ; Does not print the "blacked out" message.
 
 	call GBFadeOutToBlack
-	;ld a, $08
-	call StopMusic
 	ld hl, wd72e
 	res 5, [hl]
 	ld a, BANK(ResetStatusAndHalveMoneyOnBlackout) ; also BANK(SpecialWarpIn) and BANK(SpecialEnterMap)
@@ -767,13 +765,15 @@ HandleBlackOut::
 	ld [MBC1RomBank], a
 	call ResetStatusAndHalveMoneyOnBlackout
 	call SpecialWarpIn
-	call SpecialEnterMap
-	jp PlayDefaultMusic
+	call PlayDefaultMusicFadeOutCurrent
+	jp SpecialEnterMap	; this must be last
 
 StopMusic::
 	ld a, [wOnSGB]
 	and a
 	jr nz, .sgb
+	ld a, $FF
+	ld [wNewSoundID], a
 	ld a, %00000100
 	ld [wAudioFadeOutControl], a
 	ret
