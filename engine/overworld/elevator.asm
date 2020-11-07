@@ -4,8 +4,8 @@ ShakeElevator::
 	ld de, SCREEN_HEIGHT * $20
 	call ShakeElevatorRedrawRow
 	call Delay3
-	ld a, SFX_STOP_ALL_MUSIC
-	call PlaySound
+	ld a, $FF
+	call PlayMusicID
 	ldh a, [hSCY]
 	ld d, a
 	ld e, $1
