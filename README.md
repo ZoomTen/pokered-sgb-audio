@@ -94,58 +94,95 @@ If all goes well, you should be able to hear MSU-1 music.
 
 ## Track Order
 01: Intro Battle
+
 02: Title Screen
 
 03: Pallet Town
+
 04: Viridian City, Pewter City
+
 05: Cerulean City, Fuschia City
+
 06: Celadon City
+
 07: Cinnabar Island
+
 08: Vermilion City
+
 09: Lavender Town
+
 10: S.S. Anne
 
 11: Routes 1, 2
+
 12: Routes 24, 25, Prof. Oak Introduction
+
 13: Routes 3-10, 16-22
+
 14: Routes 11-15
+
 15: Indigo Plateau
 
 16: Pokemon Center
+
 17: Gym
+
 18: Prof. Oak's Laboratory
+
 19: Rocket Game Corner
+
 20: Rocket Hideout
+
 21: Viridian Forest
+
 22: Mt. Moon, Rock Tunnel, Caves
+
 23: Cinnabar Mansion
+
 24: Pokemon Tower
+
 25: Silph Co. Building
 
 26: Meet Prof. Oak
+
 27: Rival's Theme
+
 28: Rival's Theme (Reprise)
+
 29: Meet Rocket Trainer
+
 30: Meet Female Trainer
+
 31: Meet Male/E4 Trainer
 
 32: Follow Me / Guidepost
+
 33: Evolution, Safari Zone
+
 34: Bicycle
+
 35: Surfing
+
 --unused-- 36: Jigglypuff's Theme
 
 37: Battle! Wild Pokemon
+
 38: Battle! Trainer
+
 39: Battle! Gym Leader, Lance
+
 40: Battle! Champion
 
 41: Victory! Wild Pokemon
+
 42: Victory! Trainer
+
 43: Victory! Gym Leader / Champion
 
 44: Epilogue
+
 45: Hall of Fame
+
 46: Staff Roll
 
 
