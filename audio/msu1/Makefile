@@ -1,5 +1,5 @@
 # Point this to your Asar (SNES compiler) binary
-ASSEMBLER := ../../asar-1.71/build/asar/asar-standalone
+ASSEMBLER := ../../asar/asar/asar-standalone
 
 ASSEMBLER_OPTS :=
 

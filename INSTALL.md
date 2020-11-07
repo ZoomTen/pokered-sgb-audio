@@ -4,6 +4,15 @@ These instructions explain how to set up the tools required to build **pokered**
 
 If you run into trouble, ask for help on IRC or Discord (see [README.md](README.md)).
 
+## Addendum
+
+Follow the instructions below this section first, then do this one. Make sure CMake is set up properly.
+
+Inside the folder, do `git clone https://github.com/RPGHacker/asar` to get the Asar SNES assembler.
+
+Go inside the `asar` folder, do `cmake src`, then `make`.
+
+Check audio/msu1/Makefile and modify the `ASSEMBLER` variable depending on what was built. Usually it will be `asar-standalone` in `asar/asar`. The path is relative to the makefile.
 
 ## Windows 10
 
