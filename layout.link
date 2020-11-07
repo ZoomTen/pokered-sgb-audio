@@ -177,8 +177,6 @@ ROMX $2B
 	"Pokédex Text"
 ROMX $2C
 	"Move Names"
-ROMX $2D	
-	"SGB Music 1"
 WRAM0
 	"WRAM"
 	org $c100
