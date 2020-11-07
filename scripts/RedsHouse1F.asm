@@ -25,19 +25,25 @@ MomWakeUpText:
 MomHealPokemon:
 	ld hl, MomHealText1
 	call PrintText
+	call StopMusic
 	call GBFadeOutToWhite
 	call ReloadMapData
 	predef HealParty
+	ld a, SFX_STOP_ALL_MUSIC
+	ld [wNewSoundID], a
+	call PlaySound
+	ld a, BANK(Music_PkmnHealed)
+	ld [wAudioROMBank], a
 	ld a, MUSIC_PKMN_HEALED
 	ld [wNewSoundID], a
 	call PlaySound
-.next
+.wait_heal
 	ld a, [wChannelSoundIDs]
 	cp MUSIC_PKMN_HEALED
-	jr z, .next
-	ld a, [wMapMusicSoundID]
-	ld [wNewSoundID], a
-	call PlaySound
+	jr z, .wait_heal
+	xor a
+	ld [wCheckAndFadeMusicID], a
+	call PlayDefaultMusic
 	call GBFadeInFromWhite
 	ld hl, MomHealText2
 	jp PrintText
