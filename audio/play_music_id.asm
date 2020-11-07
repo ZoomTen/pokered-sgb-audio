@@ -47,7 +47,36 @@ _PlayMusicID::
 
 	ld a, [hl]
 	ld [wNewSoundID], a
-	jp PlaySound
+	call PlaySound
+
+; GB sound check for alts
+; THIS ONLY WORKS WHEN wCheckAndFadeMusicID = 0
+	ld a, d
+	cp Mus_MeetRival2
+	jr z, .meet_rival_alt
+	cp Mus_Ending
+	jr z, .cities1_alt
+	ret
+
+.meet_rival_alt
+	ld hl, wChannelCommandPointers
+	ld de, Music_MeetRival_branch_b1a2
+	call .overwrite_pointer
+	ld de, Music_MeetRival_branch_b21d
+	call .overwrite_pointer
+	ld de, Music_MeetRival_branch_b2b5
+.overwrite_pointer
+	ld a, e
+	ld [hli], a
+	ld a, d
+	ld [hli], a
+	ret
+
+.cities1_alt
+	ld hl, wChannelCommandPointers
+	ld de, Music_Cities1_branch_aa6f
+	jp .overwrite_pointer
+
 .stop_sound
 	ld a, [wOnSGB]
 	and a

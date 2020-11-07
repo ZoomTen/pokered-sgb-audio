@@ -108,12 +108,10 @@ GaryScript3:
 	ret
 
 GaryScript4:
-	ld a, %00000010
+	xor a
 	ld [wCheckAndFadeMusicID], a
 	ld a, Mus_Ending
 	call PlayMusicID
-	xor a
-	ld [wCheckAndFadeMusicID], a
 	ld a, $2
 	ldh [hSpriteIndexOrTextID], a
 	call GaryScript_760c8
