@@ -144,7 +144,7 @@ endm
 
 spc_m_fade: macro
 	db $E6
-	db \1, \2, \3
+	db \1, \2
 endm
 
 spc_tempo: macro

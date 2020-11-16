@@ -209,11 +209,13 @@ if __name__ == '__main__':
 				div = int(e.time/tbase)
 				
 				# adjust for instrument
-				hardcoded_transpose = 0
-				if program in ins_transpose.keys():
-					hardcoded_transpose = ins_transpose[program]
-				
-				note = (midi_note['note'] + hardcoded_transpose)
+				if args.no_map:
+					note = (midi_note['note'])
+				else:
+					hardcoded_transpose = 0
+					if program in ins_transpose.keys():
+						hardcoded_transpose = ins_transpose[program]
+					note = (midi_note['note'] + hardcoded_transpose)
 				
 				# like rests, note lengths can also be very long
 				# adjust likewise
