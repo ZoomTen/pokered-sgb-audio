@@ -35,6 +35,7 @@ if __name__ == '__main__':
 	# Map MIDI instrument to N-SPC instrument
 	ins_mappings = {
 	# midi  n-spc
+		 0: 21,	# piano
 		56: 45,	# trumpet
 		34: 13,	# bass
 		48: 29, # string
@@ -52,7 +53,9 @@ if __name__ == '__main__':
 		#     which instrument to use     which note to play when the drum hits
 		36: {'patch': 'kick_' , 'note':'kick_note_'}, # kick 1
 		38: {'patch': 'snare_', 'note':'snare_note_'}, # snare
-		39: {'patch': 'snare_', 'note':'snare_note_'}, # snare 2
+		40: {'patch': 'snare_', 'note':'snare_note_'}, # snare 2
+		42: {'patch': 'chh_', 'note':'chh_note_'}, # close hat
+		46: {'patch': 'ohh_', 'note':'ohh_note_'}, # open hat
 	}
 
 	################################################################################
@@ -169,7 +172,7 @@ if __name__ == '__main__':
 						program = midi_note['program']
 					else:
 						tracks['snes'][track_number].append(
-								'spc_inst\t{}'.format(0x14)
+								'spc_inst\t{}'.format(midi_note['program'])
 							) # DEFAULT
 			
 			
